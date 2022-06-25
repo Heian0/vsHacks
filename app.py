@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 import sqlalchemy
 from datetime import datetime
 
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
@@ -21,7 +20,6 @@ class Todo(db.Model):
         
 """""
     
-    
 @app.route('/', methods = ['POST', 'GET'])
 def get_answer():
     if request.method =='POST':
@@ -33,5 +31,5 @@ def get_answer():
         return render_template("index.html")
 
 if __name__ == "__main__":
-     
+    
     app.run(debug = True)
