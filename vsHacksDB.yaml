@@ -1,0 +1,4 @@
+mysql_host: 'localhost'
+mysql_user: 'vsHacksUser'
+mysql_password: 'vsHacks'
+mysql_db: 'vsHacks'

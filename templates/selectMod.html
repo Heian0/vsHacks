@@ -1,0 +1,42 @@
+<!--Module Selection Page-->
+{% extends 'base.html' %}
+{% block head %}
+
+<title>
+    Module Selection 
+</title>
+
+{% endblock %} 
+
+{% block body %}
+<div class = "modules">
+    <h1>Question Template</h1>
+    <form action="/question-select.html" method="POST">
+        <p> Select the modules you'd like to test
+        <br>
+        <input type="checkbox" name="answer_choice" id="one" value="Module 1">
+        <label for="1">Module 1</label><br>
+
+        <input type="checkbox" name="answer_choice" id="two" value="Module 2">
+        <label for="2">Module 2</label><br>
+
+        <input type="checkbox" name="answer_choice" id="three" value="Module 3">
+        <label for="3">Module 3</label><br>
+
+        <input type="checkbox" name="answer_choice" id="four" value="Module 4">
+        <label for="4">Module 4 </label><br>
+        
+        <input type="checkbox" name="answer_choice" id="five" value="Module 5">
+        <label for="5">Module 5</label><br>
+
+        <input type="checkbox" name="answer_choice" id="six" value="Module 6">
+        <label for="6">Module 6</label><br>
+
+        <input type="checkbox" name="answer_choice" id="seven" value="Module 7">
+        <label for="7">Module 7</label><br>
+
+
+        <input type="submit" value="submit"/>
+        </p>
+    </form>
+{% endblock %} 

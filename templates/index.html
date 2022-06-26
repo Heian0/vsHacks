@@ -3,7 +3,7 @@
 {% block head %}
 
 <title>
-    Question Template
+    {Question Template}
 </title>
 
 {% endblock %} 
@@ -11,9 +11,15 @@
 {% block body %}
 
 --<div class = "content">
-    <h1>Question Template</h1>
-    <form action="\" method="POST">
-        <p>Put the question here
+    <h1> 
+
+        {% for problem in problems %}
+            {{problem[0]}}
+        {% endfor %}
+    
+    </h1>
+
+    <form action="/display_prob" method="POST">
 
         <input type="radio" name="answer_choice" id="a" value="A">
         <label for="a">Answer A</label><br>
