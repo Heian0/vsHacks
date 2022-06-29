@@ -149,8 +149,6 @@ class Exam():
         for i in new_module_scores:
         
             new_module_scores[i] = round(new_module_scores[i], 1)
-            cur.execute("DROP TABLE u1scores")
-            cur.execute("UPDATE u1Scores SET m" + str(i+1) + " = " + str(new_module_scores[i]))
             print(new_module_scores[i])
 
         return new_module_scores
