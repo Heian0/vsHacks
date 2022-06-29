@@ -1,0 +1,25 @@
+body {
+  background-image: url("/static/images/jh.jpg");
+  font-family: Helvetica;
+  font-style: italic;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  margin-top: 100px;
+  color: white;
+}
+
+input {
+  margin: 20px;
+}
+
+#button {
+  padding: 10px;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+
+
+

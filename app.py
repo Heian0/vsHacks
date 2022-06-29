@@ -1,14 +1,17 @@
+from ast import For
+from operator import mod
 from pydoc import render_doc
+from re import M
 from typing import Any
 from unittest import result
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask
+from flask import render_template, request, redirect
 from soft_ans import Soft_ans;
-from flask_sqlalchemy import SQLAlchemy
-import sqlalchemy
 from datetime import datetime
 from flask_mysqldb import MySQL
 import yaml
 from exam import Exam
+import json
 
 app = Flask(__name__)
 
@@ -23,49 +26,79 @@ app.config['MYSQL_PASSWORD'] = 'vsHacks'
 vsHacksDB = MySQL(app)
 
 user_soft_ans = Soft_ans()
-
-@app.route('/')
-def index():
-    user_soft_ans.clear_soft_ans_list()
-    return redirect ('/display_prob')
+modules_selected_list = []
 
 
-@app.route('/display_prob', methods = ['POST', 'GET'])
-def ans_submitted():
-    
-    test = Exam.generate_exam(vsHacksDB, [3, 5])
-    for x in test: print(test[x])
-    
+@app.route('/', methods = ['POST', 'GET'])
+def home(): 
+    render_template("home.html")
+    if request.method == 'POST':
+        return redirect("/module-select")
+
+    return render_template("home.html")
+
+
+@app.route('/module-select', methods = ['POST', 'GET'])
+def module_select():
     cur = vsHacksDB.connection.cursor()
-    result_value = cur.execute("SELECT * FROM Problems WHERE module_id = 3")
-    if result_value > 0:
-        problems = cur.fetchall()    
-        render_template("index.html", problems = problems)
-    
-    if request.method =='POST':
-        
-        try:
-            given_ans = request.form['answer_choice']
-            user_soft_ans.write_to_ans_list(given_ans)
-            user_soft_ans.display_ans_list()
-            return redirect ('/')
-        
-        except:
-            return redirect ('/')
-    
-    else:
-        return render_template("index.html")
-    
-@app.route('/question-select.html', methods = ['POST', 'GET'])
-def get_answer():
-    if request.method =='POST':
-        given_ans = request.form['answer_choice']
-        print(given_ans)
-        return render_template("index.html")
-    
-    else:
-        return render_template("index.html")
+    cur.execute("select * from modules")
+    modules = cur.fetchall()
 
+    render_template("module-select.html", modules=modules)
+
+    if request.method == 'POST':
+
+        for i in (request.form.getlist('mod-select')):
+            print(int(i)) 
+            modules_selected_list.append(int(i))
+
+        return redirect("/display-exam")
+
+    return render_template("module-select.html", modules=modules)
+
+    
+@app.route('/display-exam', methods = ['POST', 'GET'])
+def display_exam():
+
+    Exam.exam = Exam.generate_ordered_prob_list(vsHacksDB, modules_selected_list)
+    Exam.ans_list = Exam.generate_ans_list(Exam.exam)
+
+    for i in Exam.exam: 
+        Exam.exam_questions.append(i[1])
+    
+    #print(exam_questions)
+    exam_questions_json = json.dumps(Exam.exam_questions)
+    ans_list_json = json.dumps(Exam.ans_list)
+    #print(ans_list_json)
+    
+    #render_template("display-exam.html", exam_questions_json = exam_questions_json, ans_list_json = ans_list_json)
+
+    if request.method ==  'POST':
+
+        for i in range(20):Exam.given_ans.append(request.form.get("q"+str(i+1)))
+        
+        print(Exam.given_ans)
+
+        return redirect("/feedback")
+
+    return render_template("display-exam.html", exam_questions_json = exam_questions_json, ans_list_json = ans_list_json)
+
+
+@app.route("/feedback", methods = ['POST', 'GET'])
+def feedback():
+    
+    correct_ans_list = Exam.generate_ans_key_list(Exam.exam)
+    #for i in correct_ans_list:print(i)
+
+    #print(exam_questions)
+    exam_questions_json = json.dumps(Exam.exam_questions)
+    ans_list_json = json.dumps(Exam.ans_list)
+    correct_ans_list_json = json.dumps(correct_ans_list)
+    given_ans_json = json.dumps(Exam.given_ans)
+
+    Exam.score_answers(vsHacksDB, Exam.given_ans, correct_ans_list, Exam.exam)
+    return render_template("feedback.html", exam_questions_json = exam_questions_json, ans_list_json = ans_list_json, correct_ans_list_json = correct_ans_list_json, given_ans_json = given_ans_json)
+            
 if __name__ == "__main__":
     
     app.run(debug = True)

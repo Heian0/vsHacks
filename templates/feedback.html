@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+<title>
+    Question Template
+</title>
+<script src="static/js/script_feedback.js" defer></script>
+<script type="text/javascript">
+var exam_questions = {{exam_questions_json|safe}};
+var ans_list = {{ans_list_json|safe}}
+var correct_ans_list = {{correct_ans_list_json|safe}}
+var given_ans_list = {{given_ans_json|safe}}
+
+</script>
+<link rel = "stylesheet" href = "{{ url_for('static', filename='/static/css/main.css') }}">
+{% endblock %} 
+
+{% block body %}
+
+<!--<div class = "content">
+    <h1>Question Template</h1>
+    <form action="\" method="POST">
+        <p>Put the question here</p>
+        <input type="radio" id="a" name="answer_choice_1" value="A">
+        <label for="a">Answer A</label><br>
+        <input type="radio" id="b" name="answer_choice_1" value="B">
+        <label for="b">Answer B</label><br>
+        <input type="radio" id="c" name="answer_choice_1" value="C">
+        <label for="c">Answer C</label>
+        <input type="radio" id="d" name="answer_choice_1" value="D">
+        <label for="d">Answer D</label>
+        <br>
+        <input type="radio" id="a" name="answer_choice_2" value="A">
+        <label for="a">Answer A</label><br>
+        <input type="radio" id="b" name="answer_choice_2" value="B">
+        <label for="b">Answer B</label><br>
+        <input type="radio" id="c" name="answer_choice_2" value="C">
+        <label for="c">Answer C</label>
+        <input type="radio" id="d" name="answer_choice_2" value="D">
+        <label for="d">Answer D</label>
+
+        <input type="submit" value="submit">
+    </form>-->
+
+    <!--<table>
+        <tr>
+            <th>Task</th>
+            <th>Added</th>
+            <th>Actions</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.content }}</td>
+                <td>{{ task.date_created.date() }}</td>
+                <td>
+                    <a href = "/delete/{{task.id}}">Delete</a>
+                    <br>
+                    <a href = "/update/{{task.id}}">Update</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <form action = "\" method = "POST">
+        <input type = "text" name = "content" id ="content">
+        <input type = "submit" value = "Add Task">
+    </form>-->
+
+
+{% endblock %} 
