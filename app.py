@@ -6,7 +6,6 @@ from typing import Any
 from unittest import result
 from flask import Flask
 from flask import render_template, request, redirect
-from soft_ans import Soft_ans;
 from datetime import datetime
 from flask_mysqldb import MySQL
 import yaml
@@ -25,7 +24,6 @@ app.config['MYSQL_PASSWORD'] = 'vsHacks'
 
 vsHacksDB = MySQL(app)
 
-user_soft_ans = Soft_ans()
 modules_selected_list = []
 
 
